@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 require('dotenv').config()
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@minibytes.dgx5f.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -25,6 +26,12 @@ client.connect(err => {
         .toArray((err,documents) => {
             res.send(documents);
         })
+    })
+    app.get('/product/:id',(req,res) =>{
+        productCollection.find({ _id: ObjectId(req.params.id)})
+            .toArray((err, documents) => {
+                res.send(documents[0]);
+            })
     })
     app.post('/addProduct',(req,res) => {
         const product = req.body;
