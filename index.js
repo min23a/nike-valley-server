@@ -34,6 +34,12 @@ client.connect(err => {
             res.send(documents[0]);
         })
     })
+    app.get('/orders/:name', (req, res) => {
+        ordersCollection.find({name : req.params.name})
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
+    })
     app.post('/addProduct',(req,res) => {
         const product = req.body;
         productCollection.insertOne(product)
