@@ -48,4 +48,7 @@ client.connect(err => {
             console.log(res)
         })
     })
+    app.delete('/delete/:id',(req,res) => {
+        productCollection.deleteOne({ _id: ObjectId(req.params.id)})
+    })
 });
