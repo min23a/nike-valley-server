@@ -20,6 +20,7 @@ app.get('/',(req,res) => {
 })
 client.connect(err => {
     const productCollection = client.db("SimpleEcomDB").collection("products");
+    const ordersCollection = client.db("SimpleEcomDB").collection("orders");
     console.log("connected");
     app.get('/products', (req,res) => {
         productCollection.find({})
@@ -29,14 +30,21 @@ client.connect(err => {
     })
     app.get('/product/:id',(req,res) =>{
         productCollection.find({ _id: ObjectId(req.params.id)})
-            .toArray((err, documents) => {
-                res.send(documents[0]);
-            })
+        .toArray((err, documents) => {
+            res.send(documents[0]);
+        })
     })
     app.post('/addProduct',(req,res) => {
         const product = req.body;
         productCollection.insertOne(product)
         .then(res => {
+            console.log(res)
+        })
+    })
+    app.post('/orders',(req,res) => {
+        const order = req.body;
+        ordersCollection.insertOne(order)
+        .then(res=> {
             console.log(res)
         })
     })
